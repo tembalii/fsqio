@@ -29,6 +29,13 @@ t1 = BashOperator(
     bash_command="echo " + message,
     dag=dag
 )
+message = requests.get("https://fakeurl.asdf/message").text
+# ruleid: formatted-string-bashoperator
+t1 = BashOperator(
+    task_id="print_date",
+    bash_command="echo " + message,
+    dag=dag
+)
 
 howlong = requests.get("https://fakeurl.asdf/howlong").text
 # ruleid: formatted-string-bashoperator

@@ -21,5 +21,5 @@ jobs:
       image: returntocorp/semgrep
     steps:
     - uses: actions/checkout@v3
-    - run: SEMGREP_BASELINE_REF=280969b5d8a36a74bab33fc70c8c93175a318ee4 semgrep ci
-    # - run: semgrep ci
+    # - run: SEMGREP_BASELINE_REF=280969b5d8a36a74bab33fc70c8c93175a318ee4 semgrep ci
+    - run: semgrep ci

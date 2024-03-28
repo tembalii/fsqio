@@ -1,0 +1,80 @@
+# Copyright 2016 Foursquare Labs Inc. All Rights Reserved.
+
+scala_version = '2.11.12'
+
+
+# NOTE(jacob): We have some tests for pants plugin functionality that need the pants
+#   runner script and a few core BUILD files available in the working directory. These
+#   will otherwise succeed locally, but fail when run under a chroot in ci unless we
+#   explicitly pull them in.
+files(
+  name = 'pants',
+  sources = [
+    '3rdparty/BUILD',
+    'BUILD.tools',
+    'pants',
+  ],
+  scope = "runtime",
+  tags = [
+    'opensource',
+  ]
+)
+
+
+# NOTE: Now that we have full use of Ivy and target scopes, this should probably be adjusted.
+# Need to do define this target and maintain tags is a leak.
+jar_library(
+  name = 'scalac',
+  tags = [
+    'exempt',
+  ],
+  jars = [
+    jar(org='org.scala-lang', name = 'scala-compiler', rev=scala_version),
+  ],
+)
+
+
+jar_library(
+  name = 'scala-repl',
+  jars = [
+    # NOTE(jacob): The ammonite jar is named to the scala patch version rather than just
+    #   minor version, so scala_jar doesn't work for us here.
+    jar(org = 'com.lihaoyi', name = 'ammonite_' + scala_version, rev='1.6.7')
+  ],
+  tags = [
+    'exempt',
+  ],
+)
+
+
+jar_library(
+  name = 'scala-library',
+  tags = [
+    'exempt',
+  ],
+  jars = [
+    jar(org='org.scala-lang', name = 'scala-library', rev=scala_version)
+  ],
+)
+
+
+jar_library(
+  name = 'buildgen-emit-exported-symbols',
+  jars = [
+    scala_jar(org = 'io.fsq', name = 'buildgen-emit-exported-symbols', rev = '2.3.0'),
+  ],
+  tags = [
+    'exempt',
+  ],
+)
+
+
+jar_library(
+  name = 'buildgen-emit-used-symbols',
+  jars = [
+    scala_jar(org = 'io.fsq', name = 'buildgen-emit-used-symbols', rev = '2.3.0'),
+  ],
+  tags = [
+    'exempt',
+  ],
+)

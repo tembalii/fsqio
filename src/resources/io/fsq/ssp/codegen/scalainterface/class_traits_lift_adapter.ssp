@@ -1,0 +1,10 @@
+<%
+  // Copyright 2017 Foursquare Labs Inc. All Rights Reserved.
+  import _root_.io.fsq.spindle.codegen.runtime.StructLike
+%>
+<%@ val cls: StructLike %>
+<%@ val pkg: String %>
+abstract class ${cls.name}LiftAdapter(
+  val underlyingLift: runtime.LiftAdapter[${cls.primaryKeyField.get.textUnscoped(pkg)}]
+) extends ${cls.name} {
+}

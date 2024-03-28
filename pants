@@ -1,0 +1,19 @@
+#!/bin/bash
+# Copyright 2015 Foursquare Labs Inc. All Rights Reserved.
+
+# Pass variables to children
+set -ea
+
+# TODO: The empty quotes are to avoid passing args to upkeep, need a better way to handle this.
+source upkeep ''
+
+"${BUILD_ROOT}/upkeep"
+
+# A noop flag for tests that cover seeding the environment since Pants exits nonzero when sourced.
+[[ -n "${FS_PANTS_NOOP}" ]] && exit 0
+
+# The script below runs the pants bootstrap task and exports PANTSBINARY. Basically a noop if the pants_version
+# hasn't changed. This could be hooked more properly into upkeep but we are waiting on the need to arise.
+source "${BUILD_ROOT}/build-support/fsqio/upkeep/scripts/opensource-pants-env.sh"
+export PYTHONPATH=src/python
+"$PANTSBINARY" "$@"

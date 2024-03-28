@@ -1,0 +1,40 @@
+sudo: false
+before_cache:
+- find . -name "*.py[co]" -print -delete
+- rm -fv $HOME/.ivy2/pants/*.{css,properties,xml,xsl}
+- rm -rf $HOME/.cache/pants/stats
+cache:
+  directories:
+  - ".local_artifact_cache/"
+  - .pants.bootstrap/bin
+  - "$HOME/.pom2"
+  - "$HOME/.cache/pip"
+  - "$HOME/.ivy2/pants"
+language: python
+python:
+- '2.7'
+env:
+  global:
+  - PANTS_CONFIG_FILES="['pants.ini', 'pants-travis-ci.ini']"
+addons:
+  apt:
+    packages:
+      - mongodb-org-server
+      - openjdk-8-jdk
+    sources:
+    - mongodb-3.0-precise
+services:
+- mongodb
+script: |
+  uname -a
+  ./pants buildgen
+  git diff --exit-code || exit "$?"
+  echo "Running under PANTS_CONFIG_FILES: ${PANTS_CONFIG_FILES}"
+  ./pants compile src::
+  ./pants test test::
+notifications:
+  slack:
+    rooms:
+      secure: ZCX+tF3/xdmoFvYbndI+Ck+5DEUWL0OK+IHDDZwRKyG6XGvkV6wnUE+GFMulMGghDQSX9FIQLEtsFNyR+fB24MrY4CY/bTxUDuSUrtDOwNRDYCAP9RnqG5DCYT2XHJh2GjFjUenn0nvfz+WI7zpFLbMuj2ImoQDRW7mX7k2tgCXW4EFZrKwkP7Knu3MqDoZz7j4UbZt2RorvrNHrjUNWl6bhZUO3HkAj1GRXRi4v76ksBMhK1feHmbT2dGXSUVsP+uSMpEx7oALQo4yTU/4K2Oji1TUomoU6P3O20nrHWeUccCJTexBksrhObDjT3WS9pCQ/G6BoZpqdGSrtJwAzyLb2Em7V8YNf2uTE8eJ0Uw5+psPBR8DdrxxSSDfODrShPi8+DcWzOK8aWTg7h3IweSiE5ma8OVqucrrY5xMwkzy80OYgJHzEAqDoBoMp5YJiQ3rHAYBZdt0axUNVgIQ626UwuWnLpeZW8TVrHcopyu9MFqDBTaadaY+tMpj92FkgndesfKqmuArrJcLPhb7o5M6juLbjtA8HHrJBFL4fG1p3hki0XHt39Aqxo60+LSOFNua3/KRkr+QcGqzP1HJVQbgslVHQNT9RanCk4O44LCcyaQOzEa2BK1G20xPGRN+2whN+pvNgmqs1XU7FhLh8LJ0hkSmANYrJqP2ICpVVUVg=
+    on_success: always
+    on_failure: always

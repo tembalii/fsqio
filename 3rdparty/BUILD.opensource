@@ -1,0 +1,1503 @@
+# Copyright 2015 Foursquare Labs Inc. All Rights Reserved.
+
+scala_version = '2.11.12'
+HADOOP_VERSION = '2.8.5'
+
+
+### START Managed Dependencies START ###
+#
+# NOTE:(mateo) This is how upstream Pants pins artifact versions. This is respected by Ivy but ignored by pom-resolve!
+# Rely on this only if you are sure it is what you need - it is a candidate for deletion at any time!
+#
+# The jar_library defs in this section are not direct dependencies in our repo - we are using these defs to pin them.
+
+# TODO(mateo): Lets move the managed_dependencies targets to a subfolder and document
+# why a jar is being pinned.
+managed_jar_dependencies(
+  name='fsqio-management',
+  artifacts=[
+    ':algebird',
+    ':apache-httpclient',
+    ':bson',
+    ':cascading',
+    ':chill',
+    jar(org = 'com.esotericsoftware', name = 'minlog', rev = '1.3.0'),
+    ':commons-logging',
+    jar(org = 'commons-codec', name = 'commons-codec', rev = '1.6'),
+    ':commons-net',
+    ':curator',
+    ':curator-test',
+    ':gson',
+    ':guava',
+    ':hadoop-common',
+    ':hamcrest-core',
+    ':hbase',
+    ':jackson',
+    ':jackson-scala',
+    ':jetty',
+    ':jetty-util',
+    ':joda-time',
+    ':json4s_spark',
+    ':lift-actor',
+    ':lift-common',
+    ':lift-db',
+    ':lift-json',
+    ':lift-json-ext',
+    ':lift-mapper',
+    ':lift-proto',
+    ':lift-record',
+    ':lift-util',
+    ':lift-webkit',
+    ':logback',
+    ':mockito',
+    ':mockito-scala',
+    ':mongodb-core',
+    ':mongodb-driver',
+    ':mongodb-driver-reactivestreams',
+    ':netty',
+    ':netty4',
+    ':janino-compiler',
+    ':reflections',
+    ':scalacheck',
+    jar(org = 'org.scala-lang', name = 'scalap', rev = scala_version),
+    '//:scalac',
+    '//:scala-library',
+    ':scala-reflect',
+    ':scalding',
+    ':slf4j-api',
+    ':slf4j-jcl',
+    ':slf4j-jul',
+    ':slf4j-nop',
+    ':slf4j-log4j',
+    ':snappy-java',
+    ':thrift',
+    ':twitter-util',
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-anim', rev = '1.8',
+      excludes = [exclude(org = 'org.apache.xmlgraphics', name = 'batik-dom')]),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-awt-util', rev = '1.8'),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-css', rev = '1.8'),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-dom', rev = '1.8',
+      excludes = [exclude(org = 'org.apache.xmlgraphics', name = 'batik-anim')]),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-ext', rev = '1.8'),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-parser', rev = '1.8'),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-svg-dom', rev = '1.8'),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-util', rev = '1.8'),
+    jar(org = 'org.apache.xmlgraphics', name = 'batik-xml', rev = '1.8'),
+    jar(org = 'org.apache.xmlgraphics', name = 'xmlgraphics-commons', rev = '1.3.1'),
+    jar(org = 'org.apache.xmlgraphics', name = 'xmlgraphics-commons', rev = '1.3.1',
+      excludes = [exclude(org = 'commons-logging', name = 'commons-logging')]),
+    ':zookeeper',
+  ],
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+)
+
+jar_library(
+  name = 'javax-annotation',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'javax.annotation', name = 'javax.annotation-api', rev = '1.3.2'),
+  ],
+)
+
+jar_library(
+  name = 'akka',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.typesafe.akka', name = 'akka-actor', rev = '2.5.21')
+  ],
+)
+
+jar_library(
+  name = 'algebird',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.twitter', name = 'algebird-core', rev = '0.13.4'),
+  ],
+)
+
+jar_library(
+  name = 'bijection',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.twitter', name = 'bijection-core', rev = '0.9.5'),
+  ],
+)
+
+jar_library(
+  name = 'apache-httpclient',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.apache.httpcomponents', name = 'httpclient', rev = '4.5.10'),
+    jar(org = 'org.apache.httpcomponents', name = 'httpcore', rev = '4.4.12'),
+  ],
+)
+
+
+jar_library(
+  name = 'caliper',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'com.google.caliper', name = 'caliper', rev='0.5-rc1',
+
+    ),
+  ],
+)
+
+cascading_rev = '2.6.3'
+jar_library(
+  name = 'cascading',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'cascading', name = 'cascading-core', rev = cascading_rev),
+    jar(org = 'cascading', name = 'cascading-local', rev = cascading_rev),
+    jar(org = 'cascading', name = 'cascading-hadoop', rev = cascading_rev),
+    jar(org = 'cascading', name = 'cascading-xml', rev = cascading_rev),
+  ],
+)
+
+jar_library(
+  name = 'commons-httpclient',
+  jars = [
+    jar(org = 'commons-httpclient', name = 'commons-httpclient', rev = '3.1', intransitive = True),
+  ],
+)
+
+jar_library(
+  name = 'commons-io',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [ jar(org = 'commons-io', name = 'commons-io', rev = '2.1')
+  ]
+)
+
+jar_library(
+  name = 'commons-lang',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'commons-lang', name = 'commons-lang', rev = '2.4')
+  ]
+)
+
+jar_library(
+  name = 'commons-logging',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'commons-logging', name = 'commons-logging', rev = '1.1.1')
+  ]
+)
+
+jar_library(
+  name = 'commons-math',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.apache.commons', name = 'commons-math', rev = '2.1')
+  ]
+)
+
+jar_library(
+  name = 'commons-net',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'commons-net', name = 'commons-net', rev = '3.0.1')
+  ]
+)
+
+jar_library(
+  name = 'commons-validator',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],  jars = [
+    jar(org = 'commons-validator', name = 'commons-validator', rev = '1.4.0')
+  ]
+)
+
+jar_library(
+  name = 'concurrentlinkedhashmap',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(
+      org = 'com.googlecode.concurrentlinkedhashmap',
+      name = 'concurrentlinkedhashmap-lru',
+      rev = '1.1',
+    ),
+  ],
+)
+
+curator_rev = '2.9.1'
+jar_library(
+  name = 'curator',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.apache.curator', name = 'curator-framework', rev = curator_rev,
+      excludes = [
+        exclude('org.apache.curator', name = 'apache-curator'),
+      ],
+    ),
+    jar(org = 'org.apache.curator', name = 'curator-client', rev = curator_rev,
+      excludes = [
+        exclude('org.apache.curator', name = 'apache-curator'),
+      ],
+    ),
+    jar(org = 'org.apache.curator', name = 'curator-recipes', rev = curator_rev,
+      excludes = [
+        exclude('org.apache.curator', name = 'apache-curator'),
+      ],
+    ),
+    jar(org = 'org.apache.curator', name = 'curator-x-discovery', rev = curator_rev,
+      excludes = [
+        exclude('org.apache.curator', name = 'apache-curator'),
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'curator-test',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.apache.curator', name = 'curator-test', rev = curator_rev,
+      excludes = [
+        exclude('org.apache.curator', name = 'apache-curator'),
+      ],
+    )
+  ]
+)
+
+finagle_rev = '20.1.0'
+jar_library(
+  name = 'finagle',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.twitter', name = 'finagle-core', rev = finagle_rev,
+      excludes = [
+        exclude(org="org.slf4j", name="slf4j-jdk14"),
+        exclude(org="org.slf4j", name="slf4j-log4j12"),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'finagle-http', rev = finagle_rev,
+      excludes = [
+        exclude(org="org.slf4j", name="slf4j-jdk14"),
+        exclude(org="org.slf4j", name="slf4j-log4j12"),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'finagle-memcached', rev = finagle_rev,
+      excludes = [
+        exclude(org="org.slf4j", name="slf4j-jdk14"),
+        exclude(org="org.slf4j", name="slf4j-log4j12"),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'finagle-serversets', rev = finagle_rev,
+      excludes = [
+        exclude(org="org.slf4j", name="slf4j-jdk14"),
+        exclude(org="org.slf4j", name="slf4j-log4j12"),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'finagle-thrift', rev = finagle_rev,
+      excludes = [
+        exclude(org="org.slf4j", name="slf4j-jdk14"),
+        exclude(org="org.slf4j", name="slf4j-log4j12"),
+      ],
+    ),
+  ],
+)
+
+# NOTE(mateo): This is also consumed by an internal jar publish which should prefer to stay in sync.
+# Please look at scripts/gobblin and include stefano/mateo on the review when changing this dependency.
+jar_library(
+  name = 'gson',
+  jars = [
+    jar(org = 'com.google.code.gson', name = 'gson', rev = '2.2.4'),
+  ],
+)
+
+geotools_rev = '9.2'
+
+jar_library(
+  name = 'gt-main',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(
+      org = 'org.geotools',
+      name = 'gt-main',
+      rev = geotools_rev,
+      excludes = [
+        exclude(org = 'xerces', name = 'xercesImpl'),
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'gt-data',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(
+      org = 'org.geotools',
+      name = 'gt-data',
+      rev = geotools_rev,
+      excludes = [
+        exclude(org = 'xerces', name = 'xercesImpl'),
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'gt-geojson',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(
+      org = 'org.geotools',
+      name = 'gt-geojson',
+      rev = geotools_rev,
+      excludes = [
+        exclude(org = 'xerces', name = 'xercesImpl'),
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'gt-shapefile',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(
+      org = 'org.geotools',
+      name = 'gt-shapefile',
+      rev = geotools_rev,
+      excludes = [
+        exclude(org = 'xerces', name = 'xercesImpl'),
+      ],
+    ),
+  ],
+)
+
+
+jar_library(
+  name = 'guava',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'com.google.guava',name = 'guava', rev = '14.0')
+  ],
+)
+
+
+jar_library(
+  name = 'hadoop-mapreduce-client',
+  jars = [
+    jar(org = 'org.apache.hadoop', name = 'hadoop-mapreduce-client-core', rev = HADOOP_VERSION,
+      excludes = [
+      ],
+    ),
+  ],
+  dependencies = [
+    ':hadoop-common',
+  ],
+  tags = [
+    'opensource',
+  ],
+)
+
+
+jar_library(
+  name = 'hadoop-common',
+  jars = [
+    jar(org = 'org.apache.hadoop', name = 'hadoop-common', rev = HADOOP_VERSION,
+      excludes = [
+      ],
+    ),
+    jar(org = 'org.apache.hadoop', name = 'hadoop-auth', rev = HADOOP_VERSION),
+    jar(org = 'javax.ws.rs', name = 'javax.ws.rs-api', rev = '2.0.1'),
+  ],
+  dependencies = [
+    ':slf4j-api',
+    ':slf4j-jcl',
+    ':slf4j-jul',
+    ':slf4j-log4j',
+  ],
+  tags = [
+    'opensource',
+  ],
+)
+
+
+# NOTE(mateo): This is a bit of a time bomb. It is a hard requirement for some libs but is also fatjarred with  junit.
+# Additionally, some libraries import it, but just transitively inherit it from junit instead of referencing this def.
+# Fix is to add this to third_party_map and see what is up.
+jar_library(
+  name='hamcrest-core',
+  jars = [
+    jar(org='org.hamcrest', name = 'hamcrest-core', rev='1.3'),
+    jar(org='org.hamcrest', name = 'hamcrest-library', rev='1.3'),
+  ],
+)
+
+
+jar_library(
+  name = 'hbase',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.apache.hbase', name = 'hbase', rev = '0.94.6-cdh4.4.0',
+      # NOTE(mateo): Turns out jruby is super poisonous and does things like fatjar unshaded joda-time.
+      # Globally excluded as well, but since hbase is the only thing that brings it in, lets do our diligence.
+      excludes = [
+        exclude(org = 'log4j', name = 'log4j'),
+        exclude(org = 'org.jruby', name = 'jruby-complete'),
+        exclude(org = 'org.slf4j', name = 'slf4j-log4j12'),
+      ],
+    ),
+  ],
+)
+
+
+jar_library(
+  name = 'icu4j',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'com.ibm.icu', name = 'icu4j', rev = '53.1')
+  ]
+)
+
+jar_library(
+  name = 'jackson',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.codehaus.jackson', name = 'jackson-core-asl', rev = '1.9.8'),
+    jar(org = 'org.codehaus.jackson', name = 'jackson-mapper-asl', rev = '1.9.8'),
+    jar(org = 'org.codehaus.jackson', name = 'jackson-xc', rev = '1.9.8'),
+  ],
+)
+
+jackson_rev = '2.6.7'
+jar_library(
+  name = 'jackson-scala',
+  jars = [
+    jar(org = 'com.fasterxml.jackson.core', name = 'jackson-annotations', rev = jackson_rev),
+    jar(org = 'com.fasterxml.jackson.core', name = 'jackson-core', rev = jackson_rev),
+    jar(org = 'com.fasterxml.jackson.core', name = 'jackson-databind', rev = jackson_rev),
+    # NOTE(iant): 2.6.7.1 for 2.12 support; should be jackson_rev in the future
+    scala_jar(org = 'com.fasterxml.jackson.module', name = 'jackson-module-scala', rev = '2.6.7.1'),
+    jar(org = 'com.fasterxml.jackson.datatype', name = 'jackson-datatype-joda', rev = jackson_rev),
+    jar(org = 'com.fasterxml.jackson.datatype', name = 'jackson-datatype-guava', rev = jackson_rev),
+    jar(org = 'com.fasterxml.jackson.datatype', name = 'jackson-datatype-jdk8', rev = jackson_rev),
+    jar(org = 'com.fasterxml.jackson.datatype', name = 'jackson-datatype-jsr310', rev = jackson_rev),
+    jar(org = 'com.fasterxml.jackson.dataformat', name = 'jackson-dataformat-cbor', rev = jackson_rev),
+  ],
+)
+
+
+jar_library(
+  name = 'janino-compiler',
+  jars = [
+    jar(org = 'org.codehaus.janino', name = 'janino', rev = '3.0.9'),
+    jar(org = 'org.codehaus.janino', name = 'commons-compiler', rev = '3.0.9'),
+  ],
+)
+
+jar_library(
+  name = 'jline',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [jar(org = 'jline', name = 'jline', rev = '0.9.94')
+  ]
+)
+
+jar_library(
+  name= 'jmh',
+  jars = [
+    jar(org = 'org.openjdk.jmh', name = 'jmh-core', rev = '1.14',
+      excludes = [
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+    jar(org = 'org.openjdk.jmh', name = 'jmh-generator-annprocess', rev = '1.14',
+      excludes = [
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+    jar(org = 'org.openjdk.jmh', name = 'jmh-generator-bytecode', rev = '1.14',
+      excludes = [
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+  ]
+)
+
+# NOTE: joda-convert is required when compiling against joda-time with scala. See
+# http://www.scala-lang.org/node/10575
+jar_library(
+  name = 'joda-time',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'joda-time', name = 'joda-time', rev = '2.10.3'),
+    jar(
+      org = 'org.joda',
+      name = 'joda-convert',
+      rev = '2.2.1',
+      # Exclude guava (even though it is only defined in the `test` scope) as a safeguard
+      # https://github.com/foursquare/foursquare.web/pull/16713#issuecomment-524566153
+      excludes = [
+          exclude(org = 'com.google.guava', name = 'guava'),
+      ]
+    )
+  ]
+)
+
+json4s_ver = '3.2.11'
+json4s_spark_ver = '3.5.3'
+
+jar_library(
+  name = 'json4s',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.json4s', name = 'json4s-native', rev = json4s_ver),
+    scala_jar(org = 'org.json4s', name = 'json4s-jackson', rev = json4s_ver),
+    scala_jar(org = 'org.json4s', name = 'json4s-core', rev = json4s_ver),
+  ]
+)
+
+jar_library(
+  name = 'json4s_spark',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.json4s', name = 'json4s-native', rev = json4s_spark_ver),
+    scala_jar(org = 'org.json4s', name = 'json4s-jackson', rev = json4s_spark_ver),
+    scala_jar(org = 'org.json4s', name = 'json4s-core', rev = json4s_spark_ver),
+  ]
+)
+
+jar_library(
+  name = 'jsr305',
+  tags = ['opensource'],
+  jars = [jar(org = 'com.google.code.findbugs', name = 'jsr305', rev = '2.0.3')],
+)
+
+jar_library(
+  name = 'jts',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(
+      org = 'com.vividsolutions',
+      name = 'jts',
+      rev = '1.12',
+      excludes = [
+        exclude(org = 'xerces', name = 'xercesImpl'),
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'junit',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'junit', name = 'junit', rev = '4.13.2'),
+  ],
+)
+
+jar_library(
+  name = 'language-detect',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'com.cybozu.labs', name = 'langdetect', rev = '1.1-20120112')
+  ]
+)
+
+jar_library(
+  name = 'logback',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'ch.qos.logback', name = 'logback-classic', rev = '1.1.3'),
+    # This is nominally a dep of logback-classic, but the dependency management of its
+    # parent pom is messed up, so it only pulls in the test jar.  Manually specifying it here
+    # is good enough for now.
+    jar(org = 'ch.qos.logback', name = 'logback-core', rev = '1.1.3'),
+    # This is an optional dependency on logback-core, so we're adding it explicitly.
+    jar(org = 'org.codehaus.janino', name = 'janino', rev = '3.0.9')
+  ],
+)
+
+jar_library(
+  name = 'mail',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'javax.mail', name = 'mail', rev = '1.4.4')
+  ]
+)
+
+liftVer = '3.1.1'
+# TODO(ryan): this should probably be deprecated in favor of finer grained deps
+target(
+  name = 'liftweb',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  dependencies = [
+    ':lift-actor',
+    ':lift-common',
+    ':lift-db',
+    ':lift-json',
+    ':lift-json-ext',
+    ':lift-mapper',
+    ':lift-proto',
+    ':lift-record',
+    ':lift-util',
+    ':lift-webkit',
+    ':lift-mongodb',
+    ':lift-mongodb-record',
+  ],
+)
+
+jar_library(
+  name = 'lift-actor',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-actor', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-common',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-common', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-db',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-db', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-json',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-json', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-json-ext',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-json-ext', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-mapper',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-mapper', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-mongodb',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-mongodb', rev = liftVer, intransitive = True),
+  ],
+  dependencies = [
+    ':mongo-java-driver-unpacked',
+  ],
+)
+
+jar_library(
+  name = 'lift-mongodb-record',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-mongodb-record', rev = liftVer, intransitive = True),
+  ],
+  dependencies = [
+    ':lift-mongodb',
+    ':lift-record',
+  ],
+)
+
+jar_library(
+  name = 'lift-proto',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-proto', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-record',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-record', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'liftweb-testkit',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-testkit', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-util',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-util', rev = liftVer)
+  ]
+)
+
+jar_library(
+  name = 'lift-webkit',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'net.liftweb', name = 'lift-webkit', rev = liftVer)
+  ]
+)
+
+# NOTE(ryan): this is just a convenient wrapper to depend on for anything in net.liftweb.mongodb._
+target(
+  name = 'lift-mongo',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  dependencies = [
+    ':lift-mongodb',
+    ':lift-mongodb-record',
+  ],
+)
+
+jar_library(
+  name = 'mockito',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.mockito', name = 'mockito-core', rev = '2.21.0')
+  ]
+)
+
+mongo_rev = '3.11.2'
+
+jar_library(
+  name = 'bson',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.mongodb', name = 'bson', rev = mongo_rev),
+  ],
+)
+
+jar_library(
+  name = 'mongodb-core',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  dependencies = [
+    ':jsr305',
+  ],
+  jars = [
+    jar(org = 'org.mongodb', name = 'mongodb-driver-core', rev = mongo_rev),
+  ],
+)
+
+jar_library(
+  name = 'mongodb-driver',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.mongodb', name = 'mongodb-driver', rev = mongo_rev),
+  ],
+)
+
+jar_library(
+  name = 'mongodb-driver-reactivestreams',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.mongodb', name = 'mongodb-driver-reactivestreams', rev = '1.12.0'),
+  ],
+)
+
+jar_library(
+  name = 'reactive-streams',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.reactivestreams', name = 'reactive-streams', rev = '1.0.2'),
+  ],
+)
+
+target(
+  name = 'mongodb-drivers',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  dependencies = [
+    ':mongodb-core',
+    ':mongodb-driver',
+    ':mongodb-driver-reactivestreams',
+  ],
+)
+
+target(
+  name = 'mongo-java-driver-unpacked',
+  dependencies = [
+    ':bson',
+    ':mongodb-drivers',
+  ],
+)
+
+jar_library(
+  name = 'netty',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],  jars = [
+    jar(org = 'io.netty', name = 'netty', rev = '3.10.1.Final'),
+  ]
+)
+
+    # NOTE(jacob): Depending on the monolithic netty jar rather than its individual
+    #   modules causes all kinds of headaches with other libraries that try to do the
+    #   right thing and only pull in what they need. There is some talk in the netty
+    #   project of making the monolith an empty wrapper that pulls in all the module jars
+    #   (see https://github.com/netty/netty/issues/4671 for details), but for now it
+    #   bundles duplicate classes and we have to sort out the conflict. Our dep report
+    #   lists spark as the only problem child pulling this in, but just one is enough.
+    #
+    #   What we do here is exclude the monolith, and instead declare a jar_library
+    #   containing the individual netty modules we need. If you add a new 3rdparty jar
+    #   with a dependency on netty-all, you may see classloading issues if it uses code
+    #   from a module we aren't pulling in. It is up to you to identify the missing
+    #   module, add it to our netty4 jar_library, and then add a dependency from your
+    #   new jar_library to our netty4 jar_library.
+    #
+    #   This also holds for libraries depending on netty modules we haven't yet declared.
+    #   We will transitively pull them in, but they won't be pinned at the proper version
+    #   and you may see classloading issues until you add them to this jar_library.
+    #
+    #   Note also included on the netty-all jar exclude in pants.ini.
+netty4_rev = '4.1.43.Final'
+jar_library(
+  name = 'netty4',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'io.netty', name = 'netty-buffer', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-codec', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-codec-dns', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-codec-http', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-codec-http2', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-codec-socks', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-common', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-handler', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-handler-proxy', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-resolver', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-resolver-dns', rev = netty4_rev),
+    jar(org = 'io.netty', name = 'netty-tcnative-boringssl-static', rev = '2.0.26.Final'),
+    jar(org = 'io.netty', name = 'netty-transport', rev = netty4_rev),
+    jar(
+      org = 'io.netty',
+      name = 'netty-transport-native-epoll',
+      classifier = 'linux-x86_64',
+      rev = netty4_rev,
+    ),
+    jar(org = 'io.netty', name = 'netty-transport-native-unix-common', rev = netty4_rev),
+  ],
+  managed_dependencies=':fsqio-management',
+)
+
+
+parboiled_rev = '1.3.0'
+jar_library(
+  name = 'parboiled-scala',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.parboiled', name = 'parboiled-scala', rev = parboiled_rev),
+    jar(org = 'org.parboiled', name = 'parboiled-java', rev = parboiled_rev,
+      excludes=[
+        exclude(org = 'org.apache.hadoop', name = 'hadoop-core'),
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'phonenumbers',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'com.googlecode.libphonenumber', name = 'libphonenumber', rev = '8.11.1')
+  ]
+)
+
+jar_library(
+  name = 'reflections',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+   jar(org = 'org.reflections', name = 'reflections', rev = '0.9.9-RC1'),
+  ],
+  # The reflections library optionally depends on servlet but we use the api that needs it. Forcing the dep here.
+  # Pants loads classpaths into the manifest of synthetic jars and reflections needs servlet to take advantage of that.
+  dependencies = [
+    ':jsr305',
+    ':servlet',
+    ':slf4j-api',
+  ],
+)
+
+jar_library(
+  name = 'scala-parser-combinators',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.scala-lang.modules', name = 'scala-parser-combinators', rev = '1.0.4'),
+  ],
+)
+
+
+jar_library(
+  name = 'scala-reflect',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.scala-lang', name = 'scala-reflect', rev = scala_version),
+  ],
+)
+
+jar_library(
+  name = 'scala-xml',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.scala-lang.modules', name = 'scala-xml', rev = '1.0.5'),
+  ],
+)
+
+jar_library(
+  name = 'scalac',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org='org.scala-lang', name = 'scala-compiler', rev=scala_version),
+  ],
+)
+
+jar_library(
+  name = 'scalacheck',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.scalacheck', name = 'scalacheck', rev = '1.14.0')
+  ]
+)
+
+jar_library(
+  name = 'nscala-time',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.github.nscala-time', name = 'nscala-time', rev = '2.22.0'),
+  ],
+)
+
+jar_library(
+  name = 'scalate',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.scalatra.scalate', name = 'scalate-core', rev = '1.8.0')
+  ]
+)
+
+jar_library(
+  name = 'scalatest',
+  tags = [
+    'opensource',
+  ],
+  jars = [
+    scala_jar(org = 'org.scalatest', name = 'scalatest', rev = '3.0.8'),
+  ]
+)
+
+scalding_ver = '0.17.3'
+jar_library(
+  name = 'scalding',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.twitter', name = 'scalding-args', rev = scalding_ver,
+      excludes=[
+        exclude(org = 'org.apache.hadoop', name = 'hadoop-core'),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'scalding-commons', rev = scalding_ver,
+      excludes=[
+        exclude(org = 'org.apache.hadoop', name = 'hadoop-core'),
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'scalding-core', rev = scalding_ver,
+      excludes=[
+        exclude(org = 'org.apache.hadoop', name = 'hadoop-core'),
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'scalding-date', rev = scalding_ver,
+      excludes=[
+        exclude(org = 'org.apache.hadoop', name = 'hadoop-core'),
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+    scala_jar(org = 'com.twitter', name = 'scalding-parquet', rev = scalding_ver,
+      excludes=[
+        exclude(org = 'org.apache.hadoop', name = 'hadoop-core'),
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+  ],
+  dependencies = [
+    ':algebird',
+    ':cascading',
+  ],
+)
+
+jar_library(
+  name = 'scalding-repl',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.twitter', name = 'scalding-repl', rev = scalding_ver),
+  ]
+)
+
+jar_library(
+  name = 'chill',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.twitter', name = 'chill', rev = '0.9.2',
+      # YES! com.estoricsoftware and com.esoteric.$foo are indeed different orgs for the same lib.
+      excludes = [
+        exclude(org = 'com.esotericsoftware'),
+        exclude(org = 'com.esotericsoftware.kryo'),
+        exclude(org = 'com.esotericsoftware.reflectasm'),
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+    jar(org = 'com.twitter', name = 'chill-java', rev = '0.9.2',
+      excludes = [
+        exclude(org = 'com.esotericsoftware'),
+        exclude(org = 'com.esotericsoftware.kryo'),
+        exclude(org = 'com.esotericsoftware.reflectasm'),
+        exclude(org = 'com.esotericsoftware.minilog'),
+        exclude(org = 'org.ow2.asm'),
+        exclude(org = 'org.ow2.asm'),
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'scopt',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.github.scopt', name = 'scopt', rev = '3.5.0', intransitive = True)
+  ]
+)
+
+jar_library(
+  name = 'servlet',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org ='javax.servlet', name='javax.servlet-api', rev='3.0.1')
+  ]
+)
+
+slf4j_rev = '1.7.7'
+jar_library(
+  name = 'slf4j-api',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.slf4j', name = 'slf4j-api', rev = slf4j_rev,
+      excludes = [
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'slf4j-jcl',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.slf4j', name = 'jcl-over-slf4j', rev = slf4j_rev,
+      excludes = [
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'slf4j-jul',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.slf4j', name = 'jul-to-slf4j', rev = slf4j_rev,
+      excludes = [
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'slf4j-log4j',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.slf4j', name = 'log4j-over-slf4j', rev = slf4j_rev,
+      excludes = [
+      ],
+    ),
+  ],
+)
+
+jar_library(
+  name = 'slf4j-nop',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'org.slf4j', name = 'slf4j-nop', rev = slf4j_rev)
+  ]
+)
+
+target(
+  name = 'slf4j-all',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  dependencies = [
+    ':slf4j-api',
+    ':slf4j-jcl',
+    ':slf4j-jul',
+    ':slf4j-log4j',
+  ],
+)
+
+jar_library(
+  name = 'slf4s',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.slf4s', name = 'slf4s-api', rev = '1.7.25'),
+  ]
+)
+
+jar_library(
+  name='snappy-java',
+  jars = [
+    jar(org='org.xerial.snappy', name='snappy-java', rev='1.1.4')
+  ]
+)
+
+specs2_rev = '4.3.6'
+jar_library(
+  name = 'specs2',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.specs2', name = 'specs2-core', rev = specs2_rev),
+    scala_jar(org = 'org.specs2', name = 'specs2-junit', rev = specs2_rev),
+    scala_jar(org = 'org.specs2', name = 'specs2-matcher', rev = specs2_rev),
+  ],
+    dependencies = [
+    ':junit',
+  ],
+)
+
+jar_library(
+  name = 'thrift',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(
+      org = 'org.apache.thrift',
+      name = 'libthrift',
+      rev = '0.9.0',
+      excludes = [
+        exclude(org='org.apache.httpcomponents', name='httpclient'),  # Depends on a bad version.
+      ],
+    ),
+  ],
+
+  dependencies = [
+    ':apache-httpclient'
+  ],
+)
+
+twitter_util_rev = '20.1.0'
+jar_library(
+  name = 'twitter-util',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'com.twitter', name = 'util-codec', rev = twitter_util_rev),
+    scala_jar(org = 'com.twitter', name = 'util-core', rev = twitter_util_rev),
+    scala_jar(org = 'com.twitter', name = 'util-hashing', rev = twitter_util_rev),
+    scala_jar(org = 'com.twitter', name = 'util-logging', rev = twitter_util_rev),
+  ],
+)
+
+jar_library(
+  name = 'typesafe-config',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    jar(org = 'com.typesafe', name = 'config', rev = '1.3.0')
+  ]
+)
+
+jar_library(name = 'zookeeper',
+  jars = [
+    jar(org = 'org.apache.zookeeper', name = 'zookeeper', rev = '3.4.6', intransitive = True,
+      excludes = [
+      ],
+    ),
+  ],
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  dependencies = [
+    ':slf4j-log4j',
+  ],
+)
+
+jar_library(
+  name = 'mockito-scala',
+  tags = [
+    'opensource',
+    'fscommon',
+  ],
+  jars = [
+    scala_jar(org = 'org.mockito', name = 'mockito-scala', rev = '1.0.10')
+  ]
+)
+
